@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Form & Field — Everyday objects, considered</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #292326;
+      --muted: #80767a;
+      --paper: #f8f5f3;
+      --green: #70263a;
+      --line: #e9e1e2;
+      --accent: #ead8dc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .serif { font-family: "Playfair Display", serif; }
+
+    .navbar {
+      background: rgba(247, 246, 242, .95);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 33px;
+      height: 33px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      margin-right: 9px;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: -.04em;
+      color: var(--ink);
+    }
+
+    .nav-link { color: #626c64; }
+    .nav-link:hover, .nav-link.active { color: var(--green); }
+
+    .hero { padding: 52px 0 31px; }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .17em;
+      font-size: .7rem;
+      font-weight: 700;
+      color: #8a5261;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      max-width: 700px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 510px;
+      line-height: 1.7;
+    }
+
+    .hero-note { font-size: .8rem; color: var(--muted); }
+
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 38px;
+      padding-bottom: 70px;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--line);
+      padding-right: 24px;
+    }
+
+    .side-title {
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #91868a;
+      font-weight: 700;
+      margin: 10px 0 13px;
+    }
+
+    .category-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: none;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: left;
+      color: #746a6e;
+      font-size: .9rem;
+    }
+
+    .category-btn:hover, .category-btn.active {
+      background: #f0e5e8;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .category-btn small { color: #a99da1; }
+
+    .side-card {
+      background: #efe3e5;
+      border-radius: 13px;
+      padding: 17px;
+      margin-top: 32px;
+    }
+
+    .side-card p {
+      font-size: .8rem;
+      color: #79646a;
+      line-height: 1.55;
+      margin: 8px 0 0;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 19px;
+    }
+
+    .result-count { font-size: .84rem; color: var(--muted); }
+    .search-box { max-width: 270px; }
+
+    .form-control, .form-select {
+      border-color: var(--line);
+      background-color: #fff;
+      border-radius: 9px;
+      padding: .65rem .85rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #b88795;
+      box-shadow: 0 0 0 .2rem #70263a1c;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 19px;
+    }
+
+    .product-card {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px #40232b0b;
+    }
+
+    .product-image-wrap {
+      position: relative;
+      background: #eeeee8;
+      aspect-ratio: 1.16 / 1;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .35s;
+    }
+
+    .product-card:hover .product-image { transform: scale(1.035); }
+
+    .badge-soft {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #f8f5f3e8;
+      color: #68273a;
+      font-size: .67rem;
+      letter-spacing: .04em;
+      padding: 6px 9px;
+      border-radius: 20px;
+    }
+
+    .heart {
+      position: absolute;
+      right: 12px;
+      top: 11px;
+      border: 0;
+      background: #f8f5f3e8;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      color: #765661;
+      font-size: 18px;
+    }
+
+    .product-info { padding: 15px; }
+
+    .product-category {
+      font-size: .67rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #91868a;
+    }
+
+    .product-name {
+      font-family: "Playfair Display", serif;
+      font-size: 1.2rem;
+      margin: 5px 0 2px;
+    }
+
+    .product-desc {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: 13px;
+    }
+
+    .product-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .price { font-weight: 700; font-size: 1rem; }
+
+    .price del {
+      color: #a7aca7;
+      font-size: .76rem;
+      font-weight: 400;
+      margin-left: 5px;
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: white;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: .58rem .8rem;
+      font-size: .79rem;
+      font-weight: 600;
+    }
+
+    .btn-green:hover { background: #511a2a; color: white; }
+
+    .btn-outline-green {
+      border: 1px solid #cbb8bd;
+      color: var(--green);
+      border-radius: 8px;
+      font-size: .82rem;
+    }
+
+    .btn-outline-green:hover {
+      background: #f3e9eb;
+      color: var(--green);
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 22px 0;
+      color: #91868a;
+      font-size: .78rem;
+    }
+
+    .cart-count {
+      display: inline-grid;
+      place-items: center;
+      min-width: 19px;
+      height: 19px;
+      padding: 0 5px;
+      background: var(--green);
+      color: white;
+      border-radius: 20px;
+      font-size: .68rem;
+      margin-left: 4px;
+    }
+
+    .offcanvas { background: var(--paper); }
+
+    .cart-row {
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+
+    .cart-row img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 9px;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 6px;
+    }
+
+    .qty-control button {
+      width: 23px;
+      height: 23px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: white;
+    }
+
+    .checkout-total {
+      border-top: 1px solid var(--line);
+      padding-top: 15px;
+    }
+
+    .toast { background: #511a2a; color: white; border: 0; }
+    .modal-content { border: 0; border-radius: 16px; overflow: hidden; }
+    .modal-header { border-bottom: 1px solid var(--line); }
+    .checkout-step { font-size: .73rem; color: #80767a; }
+    .order-success { text-align: center; padding: 35px 15px; }
+
+    .success-icon {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #f0e3e7;
+      color: var(--green);
+      font-size: 25px;
+    }
+
+    @media (max-width: 991px) {
+      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .shop-layout { grid-template-columns: 170px 1fr; gap: 24px; }
+    }
+
+    @media (max-width: 767px) {
+      .hero { padding: 38px 0 25px; }
+      .shop-layout { display: block; }
+      .sidebar { border: 0; padding: 0; margin-bottom: 22px; }
+      .category-list {
+        display: flex;
+        overflow: auto;
+        gap: 5px;
+        padding-bottom: 5px;
+      }
+      .side-title, .side-card { display: none; }
+      .category-btn { width: auto; white-space: nowrap; padding: 8px 12px; }
+      .category-btn small { display: none; }
+      .product-grid { gap: 12px; }
+      .product-info { padding: 12px; }
+      .product-name { font-size: 1.08rem; }
+      .product-desc { min-height: 2.3em; }
+      .product-bottom { align-items: flex-end; }
+      .btn-green { padding: .5rem .62rem; font-size: .72rem; }
+    }
+
+    @media (max-width: 430px) {
+      .product-grid { grid-template-columns: 1fr 1fr; }
+      .product-image-wrap { aspect-ratio: 1 / 1; }
+      .product-desc { font-size: .72rem; }
+      .product-name { font-size: 1rem; }
+      .price { font-size: .88rem; }
+      .price del { display: none; }
+      .toolbar { align-items: flex-start; }
+      .search-box { max-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#top">
+        <span class="brand-mark">F</span>form &amp; field
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#mainNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link active" href="#shop">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="#story">Our approach</a></li>
+          <li class="nav-item">
+            <button class="btn btn-outline-green ms-lg-2" data-bs-toggle="offcanvas"
+              data-bs-target="#cartPanel" aria-label="Open shopping cart">
+              Bag <span class="cart-count" id="cartCount">0</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top" class="container">
+    <section class="hero">
+      <div class="eyebrow mb-3">Objects for slower living</div>
+      <h1 class="serif mb-3">A little more <em>thought</em> in every day.</h1>
+      <p>Well-made essentials for home and everyday rituals. Made to be used, loved, and kept for a long time.</p>
+      <div class="hero-note">Considered materials · Small-batch makers · Ships plastic-free</div>
+    </section>
+
+    <section id="shop" class="shop-layout">
+      <aside class="sidebar">
+        <div class="side-title">Shop by category</div>
+        <div class="category-list" id="categoryList">
+          <button class="category-btn active" data-category="All">Everything <small>08</small></button>
+          <button class="category-btn" data-category="Home">Home <small>03</small></button>
+          <button class="category-btn" data-category="Kitchen">Kitchen <small>03</small></button>
+          <button class="category-btn" data-category="Carry">Carry <small>02</small></button>
+        </div>
+
+        <div class="side-card">
+          <div class="eyebrow">A softer footprint</div>
+          <p>Each piece is made with responsibly sourced materials and designed to outlast a trend.</p>
+          <a class="small text-decoration-none fw-semibold" style="color:var(--green)" href="#story">Our approach →</a>
+        </div>
+      </aside>
+
+      <div>
+        <div class="toolbar">
+          <div class="result-count"><strong id="resultCount">8</strong> considered essentials</div>
+          <div class="search-box">
+            <input id="searchInput" class="form-control form-control-sm" type="search"
+              placeholder="Search the collection…" aria-label="Search products">
+          </div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section id="story" class="py-5 border-top" style="border-color:var(--line)!important">
+      <div class="row align-items-center g-4">
+        <div class="col-md-5">
+          <div class="eyebrow mb-2">Good things, made well</div>
+          <h2 class="serif">Less, but better.</h2>
+        </div>
+        <div class="col-md-7 text-secondary" style="line-height:1.8">
+          We work with independent makers who care about the details. Honest materials,
+          useful forms, and thoughtful production make the everyday feel a little more special.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container d-flex justify-content-between flex-wrap gap-2">
+      <span>© 2025 Form &amp; Field</span>
+      <span>Thoughtfully made, for everyday.</span>
+    </div>
+  </footer>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel" aria-labelledby="cartLabel">
+    <div class="offcanvas-header">
+      <div>
+        <div class="eyebrow">Your selection</div>
+        <h5 class="offcanvas-title serif" id="cartLabel">
+          Shopping bag <span id="cartHeadingCount"></span>
+        </h5>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <div id="cartItems" class="flex-grow-1"></div>
+      <div id="cartFooter" class="checkout-total d-none">
+        <div class="d-flex justify-content-between mb-3">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal"></strong>
+        </div>
+        <p class="small text-secondary">Shipping and taxes are calculated at checkout.</p>
+        <button class="btn btn-green w-100 py-2" data-bs-toggle="modal"
+          data-bs-target="#checkoutModal">Continue to checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header px-4 py-3">
+          <div>
+            <div class="eyebrow">Almost yours</div>
+            <h5 class="modal-title serif" id="checkoutTitle">Checkout</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div id="checkoutFormWrap">
+            <div class="checkout-step mb-3">
+              01 — Delivery details <span class="float-end" id="checkoutTotalLabel"></span>
+            </div>
+
+            <form id="checkoutForm" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold" for="fullName">Full name</label>
+                <input class="form-control" id="fullName" name="fullName" required
+                  autocomplete="name" placeholder="Jamie Taylor">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold" for="email">Email address</label>
+                <input class="form-control" id="email" name="email" type="email" required
+                  autocomplete="email" placeholder="you@example.com">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label small fw-semibold" for="address">Street address</label>
+                <input class="form-control" id="address" name="address" required
+                  autocomplete="street-address" placeholder="123 Garden Street">
+              </div>
+
+              <div class="col-md-5">
+                <label class="form-label small fw-semibold" for="city">City</label>
+                <input class="form-control" id="city" name="city" required
+                  autocomplete="address-level2" placeholder="Portland">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold" for="region">State / region</label>
+                <input class="form-control" id="region" name="region" required
+                  autocomplete="address-level1" placeholder="Oregon">
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label small fw-semibold" for="postal">ZIP code</label>
+                <input class="form-control" id="postal" name="postal" required
+                  autocomplete="postal-code" placeholder="97201">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label small fw-semibold" for="payment">Payment method</label>
+                <select class="form-select" id="payment" required>
+                  <option value="" selected disabled>Select a payment method</option>
+                  <option>Credit or debit card</option>
+                  <option>PayPal</option>
+                  <option>Cash on delivery</option>
+                </select>
+              </div>
+
+              <div class="col-12 d-flex justify-content-between align-items-center pt-2">
+                <span class="small text-secondary">Secure checkout · Free shipping over $75</span>
+                <button class="btn btn-green px-4" type="submit">Place order</button>
+              </div>
+            </form>
+          </div>
+
+          <div id="orderSuccess" class="order-success d-none">
+            <div class="success-icon">✓</div>
+            <h3 class="serif">Thank you, <span id="customerName"></span>.</h3>
+            <p class="text-secondary">Your order is in. A confirmation is on its way to your inbox.</p>
+            <button class="btn btn-outline-green mt-2" data-bs-dismiss="modal" id="continueShopping">
+              Continue shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="cartToast" class="toast align-items-center" role="status" aria-live="polite">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">Added to your bag.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Everyday ceramic mug",
+        category: "Kitchen",
+        price: 28,
+        old: 34,
+        tag: "Bestseller",
+        desc: "Hand-thrown stoneware · 12 oz",
+        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 2,
+        name: "Linen table runner",
+        category: "Home",
+        price: 42,
+        tag: "Made to order",
+        desc: "European flax linen · Natural",
+        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 3,
+        name: "Market tote",
+        category: "Carry",
+        price: 36,
+        desc: "Recycled cotton canvas · Olive",
+        image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 4,
+        name: "Sculpted candle holder",
+        category: "Home",
+        price: 32,
+        old: 38,
+        tag: "Small batch",
+        desc: "Solid oak · Made in Vermont",
+        image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 5,
+        name: "Pour-over coffee set",
+        category: "Kitchen",
+        price: 58,
+        desc: "Glazed ceramic · Set of two",
+        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 6,
+        name: "Woven storage basket",
+        category: "Home",
+        price: 48,
+        desc: "Handwoven seagrass · Medium",
+        image: "https://images.unsplash.com/photo-1593085260707-5377ba37f868?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 7,
+        name: "Oak serving board",
+        category: "Kitchen",
+        price: 44,
+        tag: "Bestseller",
+        desc: "Responsibly sourced oak · 14 in",
+        image: "https://images.unsplash.com/photo-1604578762246-41134e37f9cc?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 8,
+        name: "Everywhere pouch",
+        category: "Carry",
+        price: 24,
+        desc: "Organic cotton · Rust stripe",
+        image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=85"
+      }
+    ];
+
+    const cart = new Map();
+    let activeCategory = "All";
+
+    const money = n => "$" + n.toFixed(2);
+
+    function renderProducts() {
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+
+      const shown = products.filter(product =>
+        (activeCategory === "All" || product.category === activeCategory) &&
+        (!q || (product.name + " " + product.category + " " + product.desc)
+          .toLowerCase().includes(q))
+      );
+
+      document.getElementById("resultCount").textContent = shown.length;
+
+      document.getElementById("productGrid").innerHTML = shown.length
+        ? shown.map(product => `
+          <article class="product-card">
+            <div class="product-image-wrap">
+              <img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy">
+              ${product.tag ? `<span class="badge-soft">${product.tag}</span>` : ""}
+              <button class="heart" type="button" aria-label="Save ${product.name}"
+                aria-pressed="false" onclick="toggleHeart(this)">♡</button>
+            </div>
+            <div class="product-info">
+              <div class="product-category">${product.category}</div>
+              <h3 class="product-name">${product.name}</h3>
+              <p class="product-desc">${product.desc}</p>
+              <div class="product-bottom">
+                <div class="price">
+                  ${money(product.price)}
+                  ${product.old ? `<del>${money(product.old)}</del>` : ""}
+                </div>
+                <button class="btn btn-green" onclick="addToCart(${product.id})">
+                  Add to bag <span aria-hidden="true">+</span>
+                </button>
+              </div>
+            </div>
+          </article>
+        `).join("")
+        : '<div class="text-secondary py-5">No pieces match that search. Try another term.</div>';
+    }
+
+    function toggleHeart(button) {
+      const isOn = button.getAttribute("aria-pressed") === "true";
+      button.setAttribute("aria-pressed", String(!isOn));
+      button.textContent = isOn ? "♡" : "♥";
+      button.style.color = isOn ? "#765661" : "#70263a";
+    }
+
+    function addToCart(id) {
+      cart.set(id, (cart.get(id) || 0) + 1);
+      renderCart();
+
+      document.getElementById("toastMessage").textContent =
+        products.find(product => product.id === id).name + " added to your bag.";
+
+      bootstrap.Toast.getOrCreateInstance(
+        document.getElementById("cartToast"),
+        { delay: 2200 }
+      ).show();
+    }
+
+    function changeQty(id, delta) {
+      const next = (cart.get(id) || 0) + delta;
+      if (next <= 0) cart.delete(id);
+      else cart.set(id, next);
+      renderCart();
+    }
+
+    function renderCart() {
+      let count = 0;
+      let total = 0;
+
+      for (const [id, quantity] of cart) {
+        count += quantity;
+        total += products.find(product => product.id === id).price * quantity;
+      }
+
+      document.getElementById("cartCount").textContent = count;
+      document.getElementById("cartHeadingCount").textContent = count ? `(${count})` : "";
+      document.getElementById("cartFooter").classList.toggle("d-none", count === 0);
+      document.getElementById("cartSubtotal").textContent = money(total);
+      document.getElementById("checkoutTotalLabel").textContent =
+        "Order subtotal · " + money(total);
+
+      const items = document.getElementById("cartItems");
+
+      items.innerHTML = count
+        ? [...cart].map(([id, quantity]) => {
+          const product = products.find(item => item.id === id);
+
+          return `
+            <div class="cart-row">
+              <img src="${product.image}" alt="">
+              <div>
+                <div class="fw-semibold small">${product.name}</div>
+                <div class="small text-secondary">${money(product.price)}</div>
+                <div class="qty-control">
+                  <button aria-label="Decrease ${product.name} quantity"
+                    onclick="changeQty(${id}, -1)">−</button>
+                  <span class="small">${quantity}</span>
+                  <button aria-label="Increase ${product.name} quantity"
+                    onclick="changeQty(${id}, 1)">+</button>
+                </div>
+              </div>
+              <strong class="small">${money(product.price * quantity)}</strong>
+            </div>
+          `;
+        }).join("")
+        : `<div class="text-center text-secondary py-5">
+            <div class="serif fs-5 text-dark mb-2">Your bag is taking a breather.</div>
+            <div class="small">Add something thoughtful to get started.</div>
+          </div>`;
+    }
+
+    document.querySelectorAll(".category-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelector(".category-btn.active").classList.remove("active");
+        button.classList.add("active");
+        activeCategory = button.dataset.category;
+        renderProducts();
+      });
+    });
+
+    document.getElementById("searchInput").addEventListener("input", renderProducts);
+
+    document.getElementById("checkoutForm").addEventListener("submit", event => {
+      event.preventDefault();
+      if (!event.currentTarget.reportValidity()) return;
+
+      document.getElementById("customerName").textContent =
+        document.getElementById("fullName").value.trim().split(" ")[0];
+
+      document.getElementById("checkoutFormWrap").classList.add("d-none");
+      document.getElementById("orderSuccess").classList.remove("d-none");
+
+      cart.clear();
+      renderCart();
+    });
+
+    document.getElementById("checkoutModal").addEventListener("hidden.bs.modal", () => {
+      document.getElementById("checkoutForm").reset();
+      document.getElementById("checkoutFormWrap").classList.remove("d-none");
+      document.getElementById("orderSuccess").classList.add("d-none");
+    });
+
+    document.getElementById("continueShopping").addEventListener("click", () => {
+      bootstrap.Offcanvas.getOrCreateInstance(
+        document.getElementById("cartPanel")
+      ).hide();
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
